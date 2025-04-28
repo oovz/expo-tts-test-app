@@ -43,6 +43,9 @@ class ExpoSpeechProvider {
       this.availableTTSLanguages = new Set(
         this.availableVoices.map(voice => voice.language)
       );
+
+      // Log all available TTS languages
+      console.log('Available TTS languages:', Array.from(this.availableTTSLanguages));
       
       this.initialized = true;
       console.log(`ExpoSpeechProvider initialized with ${this.availableVoices.length} voices and ${this.availableTTSLanguages.size} languages`);
