@@ -18,7 +18,7 @@ class ExpoSpeechProvider {
         return `~13.0.1 (SDK ${expoConfig.sdkVersion})`;
       }
       
-      return `Unknown (SDK ${expoConfig.sdkVersion})`;
+      return `Unknown (SDK ${expoConfig?.sdkVersion})`;
     } catch (error) {
       console.error('Failed to get expo-speech version:', error);
       return 'Unknown';
