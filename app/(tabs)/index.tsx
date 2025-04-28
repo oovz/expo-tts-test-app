@@ -140,7 +140,6 @@ export default function HomeScreen() {
                 ]}
                 onPress={() => handleLanguageChange(language.code)}
               >
-                <ThemedText style={styles.languageFlag}>{language.flag}</ThemedText>
                 <ThemedText style={[
                   styles.languageName,
                   { color: language.code === settings.language ? colors.tint : undefined }
