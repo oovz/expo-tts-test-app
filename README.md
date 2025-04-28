@@ -1,50 +1,90 @@
-# Welcome to your Expo app 👋
+# Expo TTS Testing App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a comprehensive testing application for exploring various Text-to-Speech (TTS) libraries available for Expo, React Native, and JavaScript. The app allows you to test different TTS engines, languages, voices, and settings in a structured environment.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Test TTS functionality across multiple languages
+- Adjust speech parameters (pitch, rate, etc.)
+- Organize speech samples by scenes and categories
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or newer)
+- npm or yarn
+- Expo CLI
+
+### Installation
+
+1. Clone the repository
+
+   ```bash
+   git clone [repository-url]
+   cd expo-tts-test-app
+   ```
+
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+### Running the App
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The app can be run on different platforms:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **iOS simulator**: Press `i` in the terminal or select "Run on iOS simulator" in the Expo Developer Tools
+- **Android emulator**: Press `a` in the terminal or select "Run on Android device/emulator"
+- **Physical device**: Scan the QR code with the Expo Go app on your device
+- **Web browser**: Press `w` in the terminal or select "Run in web browser"
 
-## Get a fresh project
+## Configuring Test Scenes
 
-When you're ready, run:
+The app uses a scene-based system for organizing TTS samples. You can easily add your own scenes by modifying the `config/scenes.ts` file.
 
-```bash
-npm run reset-project
+### Adding a New Scene
+
+1. Open `config/scenes.ts`
+2. Add a new scene object to the `SCENES` array following this structure:
+
+```typescript
+{
+  id: 'your-unique-id',
+  title: 'Scene Title',
+  description: 'Brief description of the scene',
+  sentences: {
+    'en-US': [
+      'First sentence in English.',
+      'Second sentence in English.',
+    ],
+    'zh-CN': [
+      '中文的第一句话。',
+      '中文的第二句话。',
+    ],
+    // Add more languages as needed
+  },
+  tags: ['category1', 'category2'] // Optional tags
+}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+3. Save the file and restart the app to see your new scene
 
-## Learn more
+The app will automatically recognizes any IETF BCP 47 language code you add to the scenes configuration.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Roadmap
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Future enhancements planned for this project:
 
-## Join the community
+- [ ] Support for storage of settings and preferences
+- [ ] Support for additional TTS engines
+- [ ] Support side by side comparison of voices
+- [ ] Support side by side comparison of TTS engines
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
