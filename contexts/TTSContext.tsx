@@ -3,6 +3,19 @@ import { TTSSettings, Voice, Language } from '@/app/types';
 import ExpoSpeechProvider from '@/providers/ExpoSpeechProvider';
 import { SCENES } from '@/config/scenes';
 
+// Function to get language display name from BCP 47 language code
+const getLanguageDisplayName = (languageCode: string): string => {
+  try {
+    // Use Intl.DisplayNames to get the human-readable language name
+    const displayNames = new Intl.DisplayNames([navigator.language || 'en'], { type: 'language' });
+    return displayNames.of(languageCode) || languageCode;
+  } catch (error) {
+    // Fallback if Intl.DisplayNames is not supported or fails
+    console.warn(`Could not get display name for language code: ${languageCode}`, error);
+    return languageCode;
+  }
+};
+
 // Function to derive supported languages from scenes
 const deriveSupportedLanguages = (): Language[] => {
   // Get all unique language codes from scenes
@@ -13,19 +26,10 @@ const deriveSupportedLanguages = (): Language[] => {
     });
   });
 
-  // Map language codes to full Language objects with names and flags
-  const languageMap: Record<string, { name: string, flag: string }> = {
-    'en-US': { name: 'English (US)', flag: '🇺🇸' },
-    'zh-CN': { name: 'Chinese (Simplified)', flag: '🇨🇳' },
-    'zh-TW': { name: 'Chinese (Traditional)', flag: '🇹🇼' },
-    'ja-JP': { name: 'Japanese', flag: '🇯🇵' },
-    // Add more mappings as needed
-  };
-
+  // Map language codes to Language objects with display names
   return Array.from(languageCodes).map(code => ({
     code,
-    name: languageMap[code]?.name || code,
-    flag: languageMap[code]?.flag || '🌐',
+    name: getLanguageDisplayName(code),
   }));
 };
 

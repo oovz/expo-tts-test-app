@@ -10,7 +10,6 @@ export interface Voice {
 export interface Language {
   code: string;
   name: string;
-  flag?: string;
 }
 
 export interface TTSSettings {
