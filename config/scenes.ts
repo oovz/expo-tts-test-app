@@ -3,8 +3,8 @@ import { Scene } from '@/app/types';
 export const SCENES: Scene[] = [
   {
     id: 'default',
-    title: 'Welcome',
-    description: 'Welcome messages for testing TTS',
+    title: 'Default',
+    description: 'Default messages for testing TTS',
     sentences: {
       'en-US': [
         'Hello! Welcome to the TTS testing app.',

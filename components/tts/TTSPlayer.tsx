@@ -8,15 +8,31 @@ import Slider from '@react-native-community/slider';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function TTSPlayer() {
-  const { settings, updateSettings, speak, stop, isSpeaking, currentText, setCurrentText, nextSentence, previousSentence } = useTTS();
+  const { 
+    settings, 
+    updateSettings, 
+    speak, 
+    stop, 
+    isSpeaking, 
+    currentText, 
+    setCurrentText, 
+    nextSentence, 
+    previousSentence, 
+    availableScenes 
+  } = useTTS();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
+  
+  // Find the current scene based on the selected scene ID
+  const currentScene = availableScenes.find(scene => scene.id === settings.selectedScene);
 
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <View style={styles.textHeader}>
-          <ThemedText style={styles.label}>Text to speak:</ThemedText>
+          <ThemedText style={styles.label}>
+            {currentScene ? currentScene.title : 'Text to speak:'}
+          </ThemedText>
           <View style={styles.navigationButtons}>
             <TouchableOpacity 
               style={styles.navButton} 
