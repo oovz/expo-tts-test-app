@@ -2,15 +2,27 @@ import React, { createContext, useState, useContext, useEffect, useCallback, use
 import { TTSSettings, Voice, Language } from '@/app/types';
 import ExpoSpeechProvider from '@/providers/ExpoSpeechProvider';
 import { SCENES } from '@/config/scenes';
+import * as localeCodes from 'locale-codes';
 
 // Function to get language display name from BCP 47 language code
 const getLanguageDisplayName = (languageCode: string): string => {
   try {
-    // Use Intl.DisplayNames to get the human-readable language name
-    const displayNames = new Intl.DisplayNames([navigator.language || 'en'], { type: 'language' });
-    return displayNames.of(languageCode) || languageCode;
+    // Try to get language name using locale-codes library
+    const localeInfo = localeCodes.getByTag(languageCode);
+    if (localeInfo && localeInfo.name) {
+      return localeInfo.name;
+    }
+    
+    // Try with just the language part if full code not found
+    const languagePart = languageCode.split('-')[0];
+    const languageInfo = localeCodes.getByISO6391(languagePart);
+    if (languageInfo && languageInfo.name) {
+      return languageInfo.name;
+    }
+    
+    // Fallback to the code itself
+    return languageCode;
   } catch (error) {
-    // Fallback if Intl.DisplayNames is not supported or fails
     console.warn(`Could not get display name for language code: ${languageCode}`, error);
     return languageCode;
   }
