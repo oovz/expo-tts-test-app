@@ -8,40 +8,64 @@ import { Scene } from '@/app/types';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
+import { useTTS } from '@/contexts/TTSContext';
+import { useRouter } from 'expo-router';
 
 export default function ScenesScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
-  // Filter out scenes without tags (like the default scene)
-  const scenesWithTags = SCENES.filter(scene => scene.tags && scene.tags.length > 0);
+  const { settings, updateSettings } = useTTS();
+  const router = useRouter();
   
   // Get unique tags from all scenes
-  const tags = Array.from(new Set(scenesWithTags.flatMap((scene) => scene.tags || [])));
+  const allTags = Array.from(new Set(SCENES.flatMap((scene) => scene.tags || [])));
 
-  // Filter scenes by selected tag
+  // Filter scenes by selected tag or show all if no tag is selected
   const filteredScenes = selectedTag
-    ? scenesWithTags.filter((scene) => scene.tags?.includes(selectedTag))
-    : scenesWithTags;
+    ? SCENES.filter((scene) => scene.tags?.includes(selectedTag))
+    : SCENES;
+
+  // Handle scene selection
+  const handleSceneSelect = (scene: Scene) => {
+    // Update the selected scene in the context
+    updateSettings({ 
+      selectedScene: scene.id,
+      selectedSentenceIndex: 0 // Reset to first sentence when changing scenes
+    }).then(() => {
+      // Navigate back to home screen after selection
+      router.push('/(tabs)');
+    });
+  };
 
   return (
     <ThemedView style={styles.container} useSafeArea edges={['top', 'right', 'left', 'bottom']}>
       <View style={styles.contentContainer}>
-        <View style={styles.filterContainer}>
-          <ScrollableChips
-            items={tags}
-            selectedItem={selectedTag}
-            onSelect={setSelectedTag}
-            colors={colors}
-          />
+        <View style={styles.header}>
+          <ThemedText style={styles.title}>Scenes</ThemedText>
+          <ThemedText style={styles.subtitle}>Select a scene to test TTS</ThemedText>
         </View>
+        
+        {allTags.length > 0 && (
+          <View style={styles.filterContainer}>
+            <ScrollableChips
+              items={allTags}
+              selectedItem={selectedTag}
+              onSelect={setSelectedTag}
+              colors={colors}
+            />
+          </View>
+        )}
 
         <FlatList
           data={filteredScenes}
-          renderItem={({ item }) => <SceneCard scene={item} onPress={() => {
-            // Handle scene selection if needed
-          }} />}
+          renderItem={({ item }) => (
+            <SceneCard 
+              scene={item} 
+              isSelected={item.id === settings.selectedScene}
+              onPress={() => handleSceneSelect(item)} 
+            />
+          )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
@@ -105,7 +129,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    paddingTop: 20, // Add consistent top padding
+    paddingTop: 20,
   },
   header: {
     paddingHorizontal: 24,
