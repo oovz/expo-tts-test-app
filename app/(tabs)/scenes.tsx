@@ -40,12 +40,7 @@ export default function ScenesScreen() {
 
   return (
     <ThemedView style={styles.container} useSafeArea edges={['top', 'right', 'left', 'bottom']}>
-      <View style={styles.contentContainer}>
-        <View style={styles.header}>
-          <ThemedText style={styles.title}>Scenes</ThemedText>
-          <ThemedText style={styles.subtitle}>Select a scene to test TTS</ThemedText>
-        </View>
-        
+      <View style={styles.contentContainer}>        
         {allTags.length > 0 && (
           <View style={styles.filterContainer}>
             <ScrollableChips
