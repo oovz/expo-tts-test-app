@@ -6,11 +6,15 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useTTS } from '@/contexts/TTSContext';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import Constants from 'expo-constants';
 
 export default function SettingsScreen() {
   const { availableVoices, availableLanguages, availableTTSLanguages, providerVersion } = useTTS();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
+  
+  // Get app version from app.json via Constants
+  const appVersion = Constants.expoConfig?.version || '1.0.0';
 
   return (
     <ThemedView style={styles.container} useSafeArea edges={['top', 'right', 'left', 'bottom']}>
@@ -72,7 +76,6 @@ export default function SettingsScreen() {
             <View style={styles.languageGrid}>
               {availableLanguages.map(lang => (
                 <View key={lang.code} style={styles.languageCapsule}>
-                  <ThemedText style={styles.languageFlag}>{lang.flag}</ThemedText>
                   <ThemedText style={styles.languageName}>{lang.name}</ThemedText>
                   <ThemedText style={styles.voiceCount}>
                     {availableVoices.filter(v => v.language === lang.code).length} voices
@@ -88,13 +91,10 @@ export default function SettingsScreen() {
           <ThemedText style={styles.sectionTitle}>Credits</ThemedText>
           <View style={styles.card}>
             <ThemedText style={styles.creditText}>
-              This app was created as a test application for Expo's text-to-speech functionality.
-            </ThemedText>
-            <ThemedText style={styles.creditText}>
-              Built with Expo SDK 52 and React Native.
+              Built with Expo SDK {Constants.expoConfig?.sdkVersion} and React Native.
             </ThemedText>
             <View style={styles.versionRow}>
-              <ThemedText style={styles.versionText}>App Version: 1.0.0</ThemedText>
+              <ThemedText style={styles.versionText}>App Version: {appVersion}</ThemedText>
             </View>
           </View>
         </View>

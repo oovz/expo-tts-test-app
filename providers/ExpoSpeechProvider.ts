@@ -13,13 +13,12 @@ class ExpoSpeechProvider {
     try {
       // Access the expo-speech version from Constants.expoConfig
       const expoConfig = Constants.expoConfig;
-      if (expoConfig?.sdkVersion) {
+      if (expoConfig?.sdkVersion === '52.0.0') {
         // For installed expo modules, we can derive the approximate version from the SDK
         return `~13.0.1 (SDK ${expoConfig.sdkVersion})`;
       }
       
-      // Fallback to hardcoded version from package.json if we can't get it dynamically
-      return '~13.0.1';
+      return `Unknown (SDK ${expoConfig.sdkVersion})`;
     } catch (error) {
       console.error('Failed to get expo-speech version:', error);
       return 'Unknown';
