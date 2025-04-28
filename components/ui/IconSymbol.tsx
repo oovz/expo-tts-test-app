@@ -13,6 +13,17 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'chevron.left': 'chevron-left',
+  // Tab bar icon mappings
+  'waveform': 'graphic-eq',
+  'text.bubble': 'chat',
+  'slider.horizontal.3': 'settings',
+  'checkmark.circle.fill': 'check-circle',
+  'speaker.slash': 'volume-off',
+  'info.circle': 'info',
+  'doc.text.magnifyingglass': 'search',
+  'chevron.up': 'keyboard-arrow-up',
+  'chevron.down': 'keyboard-arrow-down',
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
