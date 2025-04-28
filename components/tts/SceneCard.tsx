@@ -8,12 +8,18 @@ import { Colors } from '@/constants/Colors';
 interface SceneCardProps {
   scene: Scene;
   isSelected?: boolean;
+  currentLanguage: string;
   onPress: () => void;
 }
 
-const SceneCard: React.FC<SceneCardProps> = ({ scene, isSelected = false, onPress }) => {
+const SceneCard: React.FC<SceneCardProps> = ({ scene, isSelected = false, currentLanguage, onPress }) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
+  
+  // Check if the scene supports the current language
+  const languageSupported = scene.sentences && 
+                            scene.sentences[currentLanguage] && 
+                            scene.sentences[currentLanguage].length > 0;
 
   return (
     <TouchableOpacity
@@ -22,13 +28,18 @@ const SceneCard: React.FC<SceneCardProps> = ({ scene, isSelected = false, onPres
         {
           backgroundColor: isSelected ? colors.tint + '20' : '#F5F5F7',
           borderColor: isSelected ? colors.tint : '#E5E5E7',
+          opacity: languageSupported ? 1 : 0.7,
         },
       ]}
-      activeOpacity={0.7}
-      onPress={onPress}
+      activeOpacity={languageSupported ? 0.7 : 1}
+      onPress={languageSupported ? onPress : undefined}
+      disabled={!languageSupported}
     >
       <View style={styles.header}>
-        <ThemedText style={[styles.title, { color: isSelected ? colors.tint : colors.text }]}>
+        <ThemedText style={[
+          styles.title, 
+          { color: isSelected ? colors.tint : colors.text }
+        ]}>
           {scene.title}
         </ThemedText>
         {scene.tags && scene.tags.length > 0 && (
@@ -52,10 +63,16 @@ const SceneCard: React.FC<SceneCardProps> = ({ scene, isSelected = false, onPres
       )}
 
       <View style={styles.languagesContainer}>
-        {Object.keys(scene.sentences).length > 0 && (
-          <ThemedText style={styles.languagesLabel}>
-            Available in {Object.keys(scene.sentences).length} languages
+        {!languageSupported ? (
+          <ThemedText style={[styles.unavailableLanguage, { color: '#FF6B6B' }]}>
+            Selected language is not available in this scene
           </ThemedText>
+        ) : (
+          Object.keys(scene.sentences).length > 0 && (
+            <ThemedText style={styles.languagesLabel}>
+              Available in {Object.keys(scene.sentences).length} languages
+            </ThemedText>
+          )
         )}
       </View>
     </TouchableOpacity>
@@ -109,6 +126,10 @@ const styles = StyleSheet.create({
   languagesLabel: {
     fontSize: 12,
     opacity: 0.6,
+  },
+  unavailableLanguage: {
+    fontSize: 12,
+    fontWeight: '500',
   }
 });
 

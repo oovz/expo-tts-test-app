@@ -63,6 +63,7 @@ export default function ScenesScreen() {
             <SceneCard 
               scene={item} 
               isSelected={item.id === settings.selectedScene}
+              currentLanguage={settings.language}
               onPress={() => handleSceneSelect(item)} 
             />
           )}
