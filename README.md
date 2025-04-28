@@ -83,6 +83,7 @@ The app will automatically recognizes any IETF BCP 47 language code you add to t
 
 Future enhancements planned for this project:
 
+- [ ] Fix issues with android emulator not correctly initializing TTS
 - [ ] Support for storage of settings and preferences
 - [ ] Support for additional TTS engines
 - [ ] Support side by side comparison of voices

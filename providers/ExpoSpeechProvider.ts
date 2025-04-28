@@ -29,6 +29,7 @@ class ExpoSpeechProvider {
     if (this.initialized) return;
     
     try {
+      // FIXME: may return 0 on android emulator. Check why.
       const voices = await Speech.getAvailableVoicesAsync();
       
       this.availableVoices = voices.map(voice => ({
