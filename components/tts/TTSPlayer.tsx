@@ -25,24 +25,39 @@ export default function TTSPlayer() {
   
   // Find the current scene based on the selected scene ID
   const currentScene = availableScenes.find(scene => scene.id === settings.selectedScene);
+  
+  // Get total sentences count for the current scene and language
+  const totalSentences = currentScene?.sentences[settings.language]?.length || 0;
+  
+  // Current sentence index (add 1 for display as it's 0-based in code but we want to show 1-based to users)
+  const currentSentenceIndex = (settings.selectedSentenceIndex || 0) + 1;
 
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <View style={styles.textHeader}>
           <ThemedText style={styles.label}>
-            {currentScene ? currentScene.title : 'Text to speak:'}
+            Scene: {currentScene ? currentScene.title : 'No Scene selected'}
           </ThemedText>
-          <View style={styles.navigationButtons}>
+          <View style={styles.navigationContainer}>
             <TouchableOpacity 
               style={styles.navButton} 
               onPress={previousSentence}
+              disabled={currentSentenceIndex <= 1}
             >
               <IconSymbol size={18} name="chevron.left" color={colors.text} />
             </TouchableOpacity>
+            
+            <View style={styles.sentenceCounter}>
+              <ThemedText style={styles.counterText}>
+                {currentSentenceIndex}/{totalSentences}
+              </ThemedText>
+            </View>
+            
             <TouchableOpacity 
               style={styles.navButton} 
               onPress={nextSentence}
+              disabled={currentSentenceIndex >= totalSentences}
             >
               <IconSymbol size={18} name="chevron.right" color={colors.text} />
             </TouchableOpacity>
@@ -132,6 +147,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
+  navigationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   navigationButtons: {
     flexDirection: 'row',
   },
@@ -142,7 +161,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 8,
+  },
+  sentenceCounter: {
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  counterText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   textBox: {
     backgroundColor: '#ffffff',
