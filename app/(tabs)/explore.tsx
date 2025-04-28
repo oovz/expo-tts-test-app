@@ -1,109 +1,231 @@
-import { StyleSheet, Image, Platform } from 'react-native';
-
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import React from 'react';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useTTS } from '@/contexts/TTSContext';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
-export default function TabTwoScreen() {
+export default function SettingsScreen() {
+  const { availableVoices, availableLanguages, availableTTSLanguages, providerVersion } = useTTS();
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
+    <ThemedView style={styles.container} useSafeArea edges={['top', 'right', 'left', 'bottom']}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* TTS Provider Information */}
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>TTS Provider Details</ThemedText>
+          <View style={styles.card}>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>Provider</ThemedText>
+              <ThemedText style={styles.infoValue}>Expo Speech</ThemedText>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>Version</ThemedText>
+              <ThemedText style={styles.infoValue}>{providerVersion}</ThemedText>
+            </View>
+            <View style={styles.infoRowLast}>
+              <ThemedText style={styles.infoLabel}>Platform</ThemedText>
+              <ThemedText style={styles.infoValue}>
+                {Platform.OS === 'web' ? 'Web' : Platform.OS === 'ios' ? 'iOS' : 'Android'}
+              </ThemedText>
+            </View>
+          </View>
+        </View>
+
+        {/* Voice Stats */}
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Voice Statistics</ThemedText>
+          <View style={styles.card}>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>Available Voices</ThemedText>
+              <View style={[styles.badge, { backgroundColor: colors.tint }]}>
+                <ThemedText style={styles.badgeText}>{availableVoices.length}</ThemedText>
+              </View>
+            </View>
+            <View style={styles.infoRow}>
+              <ThemedText style={styles.infoLabel}>Supported Languages</ThemedText>
+              <View style={[styles.badge, { backgroundColor: colors.tint }]}>
+                <ThemedText style={styles.badgeText}>{availableTTSLanguages.length}</ThemedText>
+              </View>
+            </View>
+            <View style={styles.infoRowLast}>
+              <ThemedText style={styles.infoLabel}>Configured Languages</ThemedText>
+              <View style={[styles.badge, { backgroundColor: colors.tint }]}>
+                <ThemedText style={styles.badgeText}>{availableLanguages.length}</ThemedText>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Language Coverage */}
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Language Coverage</ThemedText>
+          <View style={styles.card}>
+            <View style={styles.languageGrid}>
+              {availableLanguages.map(lang => (
+                <View key={lang.code} style={styles.languageCapsule}>
+                  <ThemedText style={styles.languageFlag}>{lang.flag}</ThemedText>
+                  <ThemedText style={styles.languageName}>{lang.name}</ThemedText>
+                  <ThemedText style={styles.voiceCount}>
+                    {availableVoices.filter(v => v.language === lang.code).length} voices
+                  </ThemedText>
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+
+        {/* Credits */}
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Credits</ThemedText>
+          <View style={styles.card}>
+            <ThemedText style={styles.creditText}>
+              This app was created as a test application for Expo's text-to-speech functionality.
             </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+            <ThemedText style={styles.creditText}>
+              Built with Expo SDK 52 and React Native.
+            </ThemedText>
+            <View style={styles.versionRow}>
+              <ThemedText style={styles.versionText}>App Version: 1.0.0</ThemedText>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  titleContainer: {
+  header: {
+    paddingHorizontal: 24,
+    paddingBottom: 16,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    opacity: 0.7,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 20, // Add consistent top padding
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  card: {
+    backgroundColor: '#f5f5f7',
+    borderRadius: 12,
+    padding: 16,
+  },
+  infoRow: {
     flexDirection: 'row',
-    gap: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.05)',
+  },
+  infoRowLast: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  infoLabel: {
+    fontSize: 15,
+    opacity: 0.7,
+  },
+  infoValue: {
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  badge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  badgeText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  languageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  languageCapsule: {
+    width: '48%',
+    backgroundColor: 'rgba(0,0,0,0.03)',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  languageFlag: {
+    fontSize: 24,
+    marginBottom: 8,
+  },
+  languageName: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  voiceCount: {
+    fontSize: 12,
+    opacity: 0.6,
+  },
+  infoCard: {
+    flexDirection: 'row',
+    backgroundColor: '#f0f0f5',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  infoText: {
+    fontSize: 14,
+    marginLeft: 12,
+    flex: 1,
+    lineHeight: 20,
+  },
+  creditText: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  versionRow: {
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+  },
+  versionText: {
+    fontSize: 12,
+    opacity: 0.6,
+    textAlign: 'center',
   },
 });
