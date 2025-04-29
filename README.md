@@ -10,7 +10,7 @@ This is a comprehensive testing application for exploring various Text-to-Speech
 
 ## Supports
 
-[x] (expo-speech)[https://docs.expo.dev/versions/latest/sdk/speech]
+- [x] [expo-speech](https://docs.expo.dev/versions/latest/sdk/speech)
 
 ## Getting Started
 
