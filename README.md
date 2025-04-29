@@ -8,6 +8,10 @@ This is a comprehensive testing application for exploring various Text-to-Speech
 - Adjust speech parameters (pitch, rate, etc.)
 - Organize speech samples by scenes and categories
 
+## Supports
+
+[x] (expo-speech)[https://docs.expo.dev/versions/latest/sdk/speech]
+
 ## Getting Started
 
 ### Prerequisites
