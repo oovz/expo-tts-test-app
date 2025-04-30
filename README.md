@@ -25,7 +25,7 @@ This is a comprehensive testing application for exploring various Text-to-Speech
 1. Clone the repository
 
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/oovz/expo-tts-test-app.git
    cd expo-tts-test-app
    ```
 
