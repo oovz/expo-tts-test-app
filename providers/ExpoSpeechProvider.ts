@@ -1,6 +1,6 @@
 // Minimal implementation of the Expo Speech provider
 import * as Speech from 'expo-speech';
-import { Voice, Language } from '@/app/types';
+import { Voice, Language } from '@/types';
 import Constants from 'expo-constants';
 
 class ExpoSpeechProvider {

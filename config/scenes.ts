@@ -1,4 +1,4 @@
-import { Scene } from '@/app/types';
+import { Scene } from '@/types';
 
 export const SCENES: Scene[] = [
   {

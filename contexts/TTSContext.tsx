@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
-import { TTSSettings, Voice, Language } from '@/app/types';
+import { TTSSettings, Voice, Language } from '@/types';
 import ExpoSpeechProvider from '@/providers/ExpoSpeechProvider';
 import { SCENES } from '@/config/scenes';
 import * as localeCodes from 'locale-codes';

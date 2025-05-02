@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/ThemedView';
 import TTSPlayer from '@/components/tts/TTSPlayer';
 import { useTTS } from '@/contexts/TTSContext';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Voice } from '@/app/types';
+import { Voice } from '@/types';
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme();

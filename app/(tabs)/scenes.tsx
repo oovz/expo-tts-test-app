@@ -4,7 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import SceneCard from '@/components/tts/SceneCard';
 import { SCENES } from '@/config/scenes';
-import { Scene } from '@/app/types';
+import { Scene } from '@/types';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
