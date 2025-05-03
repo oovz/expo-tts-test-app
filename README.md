@@ -4,21 +4,15 @@ This is a comprehensive testing application for exploring various Text-to-Speech
 
 ## Features
 
-- Test TTS functionality across multiple languages
-- Adjust speech parameters (pitch, rate, etc.)
-- Organize speech samples by scenes and categories
+- Easy language and voice selection
+- Adjust speech pitch and rate
+- Predefined scenes with sample sentences
 
 ## Supports
 
 - [x] [expo-speech](https://docs.expo.dev/versions/latest/sdk/speech)
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (v16 or newer)
-- npm or yarn
-- Expo CLI
 
 ### Installation
 
